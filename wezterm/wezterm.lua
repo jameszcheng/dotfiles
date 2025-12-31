@@ -19,7 +19,7 @@ config.animation_fps = 1
 -- =========================================================
 -- 2. APPEARANCE & SHELL
 -- =========================================================
-config.color_scheme = 'Catppuccin Mocha'
+config.color_scheme = 'Tokyo Night'
 config.default_cursor_style = 'BlinkingBar'
 config.colors = { compose_cursor = 'orange' }
 
@@ -27,6 +27,18 @@ config.colors = { compose_cursor = 'orange' }
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
   config.default_prog = { "C:\\Program Files\\Git\\bin\\bash.exe", "-l" }
 end
+
+-- Allow selecting powershell when clicking new window
+config.launch_menu = {
+  {
+    label = "PowerShell",
+    args = { "powershell.exe", "-NoLogo" },
+  },
+  {
+    label = "Git Bash",
+    args = { "C:\\Program Files\\Git\\bin\\bash.exe", "-l" },
+  },
+}
 
 -- Fancy Right Status (Shows LEADER when active)
 wezterm.on('update-right-status', function(window, pane)

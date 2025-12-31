@@ -4,6 +4,8 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set backspace=indent,eol,start
+set autoindent
+set smartindent
 " 1. Force Vim to think it can send escape codes
 set t_Co=256
 
