@@ -1,0 +1,38 @@
+set mouse=a
+set number
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set backspace=indent,eol,start
+" 1. Force Vim to think it can send escape codes
+set t_Co=256
+
+" 2. The Nuclear Override
+" This manually defines:
+" SI = Start Insert (Bar)
+" EI = End Insert (Block)
+" SR = Replace Mode (Underline)
+if &term =~ '^xterm' || &term =~ '^screen' || &term =~ '^tmux'
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
+endif
+
+" 3. If you are using Neovim, UNCOMMENT the line below (Neovim ignores t_SI/t_EI)
+" set guicursor=n-v-c:block,i-ci-ve:ver25
+
+function! Osc52Yank()
+    " Encode selection
+    let buffer=system('base64 -w0', @0)
+    let buffer=substitute(buffer, "\n$", "", "")
+    let osc52="\e]52;c;".buffer."\x07"
+    
+    " Send to TTY silently (bypassing the UI)
+    call system("printf '" . osc52 . "' > /dev/tty")
+    
+    " Force screen refresh immediately
+    redraw!
+endfunction
+
+" The Trigger
+vnoremap y y:call Osc52Yank()<CR>
